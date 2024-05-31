@@ -37,9 +37,9 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Nexus repo success](img/Screenshot 2024-05-18 225409.jpg)
-![Jenkins setup](img/Screenshot 2024-05-18 225645.jpg)
-![Jenkins success](img/Screenshot 2024-05-18 225728.jpg)`
+![Nexus repo success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225409.jpg)
+![Jenkins setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225645.jpg)
+![Jenkins success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225728.jpg)`
 
 
 
@@ -60,8 +60,8 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Pipeline setup](img/Screenshot 2024-05-20 191354.jpg)
-![Pipeline success](img/Screenshot 2024-05-20 191229.jpg)
+![Pipeline setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-20 191354.jpg)
+![Pipeline success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-20 191229.jpg)
 ![Nexus success]()`
 
 
@@ -81,9 +81,9 @@
 ....
 ```
 `При необходимости прикрепитe сюда скриншоты
-![Pipeline setup](img/Screenshot%202024-05-31%20222053.jpg)
-![Pipeline success](img/Screenshot%202024-05-31%20221741.jpg)
-![Nexus success](img/Screenshot%202024-05-31%20221900.jpg)`
+![Pipeline setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20222053.jpg)
+![Pipeline success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20221741.jpg)
+![Nexus success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20221900.jpg)`
 
 ### Задание 4
 

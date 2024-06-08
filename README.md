@@ -24,21 +24,39 @@
 
 ### Задание 1
 
-`Локальная инсталляция Git, запуск раннера и его регистрация`
+`Установите Zabbix Server с веб-интерфейсом.`
 
-1. Git стоит на ВМ, раннер запущен и работает.
+1. на одну машину савим полный набор: сервер, агент, веб, на вторую - только агент.
 
 ```
-Поле для вставки кода...
-....
-....
-....
-....
+Машина 1:
+# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+# dpkg -i zabbix-release_6.0-4+debian11_all.deb
+# apt update
+
+# apt install zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
+
+# sudo -u postgres createuser --pwprompt zabbix
+# sudo -u postgres createdb -O zabbix zabbix
+
+# zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+
+# systemctl restart zabbix-server zabbix-agent nginx php7.4-fpm
+# systemctl enable zabbix-server zabbix-agent nginx php7.4-fpm
+
+Машина 2:
+# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+# dpkg -i zabbix-release_6.0-4+debian11_all.deb
+# apt update
+
+# apt install zabbix-agent
+
+# systemctl restart zabbix-agent
+# systemctl enable zabbix-agent
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Runner working fine](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-07 183943.jpg)
-![Runner config](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-07 184057.jpg)`
+![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214052.jpg)`
 
 
 
@@ -46,22 +64,34 @@
 
 ### Задание 2
 
-`Запушьте репозиторий на GitLab, изменив origin. Это изучалось на занятии по Git. Создайте .gitlab-ci.yml, описав в нём все необходимые, на ваш взгляд, этапы.`
+`Установите Zabbix Agent на два хоста.`
 
-1. Репо апдейтнулся также успешно, но пришлось попотеть над скриптиком внутри пайплайна.
+1. Агент установлен на два хоста. Сервер обращается к нему по локалхосту на порте 10050, ко второму агенту - по IP. 
 
 ```
-Поле для вставки кода...
-....
-....
-....
-....
+Команды для установки агента:
+
+# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
+# dpkg -i zabbix-release_6.0-4+debian11_all.deb
+# apt update
+
+# apt install zabbix-agent
+
+# systemctl restart zabbix-agent
+# systemctl enable zabbix-agent
+
+Конфиг: sudo nano /etc/zabbix/zabbix_agentd.conf
+
+
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Pipeline setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-20 191354.jpg)
-![Pipeline success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-20 191229.jpg)
-![Nexus success]()`
+![Configuration -> Hosts](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214243.jpg)
+![Agent's logs](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214938.jpg)
+![Incoming data from both agent and server](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 215132.jpg)
+
+
+`
 
 
 ---

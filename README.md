@@ -56,7 +56,8 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_214052.jpg)`
+![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_214052.jpg)
+`
 
 
 

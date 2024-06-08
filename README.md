@@ -56,7 +56,7 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214052.jpg)`
+![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot_2024-06-08_214052.jpg)`
 
 
 
@@ -86,10 +86,9 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Configuration -> Hosts](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214243.jpg)
-![Agent's logs](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 214938.jpg)
-![Incoming data from both agent and server](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-08 215132.jpg)
-
+![Configuration -> Hosts](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot_2024-06-08_214243.jpg)
+![Agent's logs](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot_2024-06-08_214938.jpg)
+![Incoming data from both agent and server](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot_2024-06-08_215132.jpg)
 
 `
 

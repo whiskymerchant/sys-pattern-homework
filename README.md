@@ -24,9 +24,9 @@
 
 ### Задание 1
 
-`Приведите ответ в свободной форме........`
+`Локальная инсталляция Git, запуск раннера и его регистрация`
 
-1. Репозиторий аптейтнулся успешно, детали - в трех скриншотах ниже.
+1. Git стоит на ВМ, раннер запущен и работает.
 
 ```
 Поле для вставки кода...
@@ -37,9 +37,8 @@
 ```
 
 `При необходимости прикрепитe сюда скриншоты
-![Nexus repo success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225409.jpg)
-![Jenkins setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225645.jpg)
-![Jenkins success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-05-18 225728.jpg)`
+![Runner working fine](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-07 183943.jpg)
+![Runner config](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot 2024-06-07 184057.jpg)`
 
 
 
@@ -47,7 +46,7 @@
 
 ### Задание 2
 
-`Приведите ответ в свободной форме........`
+`Запушьте репозиторий на GitLab, изменив origin. Это изучалось на занятии по Git. Создайте .gitlab-ci.yml, описав в нём все необходимые, на ваш взгляд, этапы.`
 
 1. Репо апдейтнулся также успешно, но пришлось попотеть над скриптиком внутри пайплайна.
 
@@ -71,7 +70,7 @@
 
 `Приведите ответ в свободной форме........`
 
-1. Nexus установлен, бинарный фал собирается и пушится в репо.
+1. 
 
 ```
 Поле для вставки кода...
@@ -81,9 +80,7 @@
 ....
 ```
 `При необходимости прикрепитe сюда скриншоты
-![Pipeline setup](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20222053.jpg)
-![Pipeline success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20221741.jpg)
-![Nexus success](https://github.com/whiskymerchant/sys-pattern-homework/blob/8-02/img/Screenshot%202024-05-31%20221900.jpg)`
+![]()`
 
 ### Задание 4
 

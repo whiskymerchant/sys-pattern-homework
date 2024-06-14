@@ -50,7 +50,7 @@
 ```
 
 `Скриншоты:
-![2 hosts added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot_2024-06-14_143003.jpg)
+![2 hosts added](img/smon-3/Screenshot_2024-06-14_143003.jpg)
 `
 
 

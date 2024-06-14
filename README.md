@@ -33,7 +33,7 @@
 ```
 
 `Скриншоты:
-![Шаблон с кастомными items](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 134216.jpg)
+![Шаблон с кастомными items](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot_2024-06-14_134216.jpg)
 `
 
 

@@ -50,7 +50,7 @@
 ```
 
 `Скриншоты:
-![2 hosts added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)
+![2 hosts added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot_2024-06-14_143003.jpg)
 `
 
 
@@ -65,7 +65,7 @@
 ```
 ```
 `Скриншоты:
-![2 groups added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)`
+![2 groups added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot_2024-06-14_143003.jpg)`
 
 ### Задание 4
 
@@ -77,4 +77,4 @@
 ```
 
 `Скриншоты:
-![Custom dashboard](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 150854.jpg)`
+![Custom dashboard](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot_2024-06-14_150854.jpg)`

@@ -60,12 +60,12 @@
 
 `Привяжите созданный шаблон к двум хостам. Также привяжите к обоим хостам шаблон Linux by Zabbix Agent.`
 
-1. Две группы гостов добавлены и собирают информацию
+1. Две группы хостов добавлены и собирают информацию
 
 ```
 ```
 `Скриншоты:
-![1 groups added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)`
+![2 groups added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)`
 
 ### Задание 4
 

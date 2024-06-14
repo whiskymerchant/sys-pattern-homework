@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "Система мониторинга Zabbix" - `Антон Плехов`
+# Домашнее задание к занятию "Система мониторинга Zabbix часть 2" - `Антон Плехов`
 
 
 ### Инструкция по выполнению домашнего задания
@@ -24,39 +24,16 @@
 
 ### Задание 1
 
-`Установите Zabbix Server с веб-интерфейсом.`
+`Создайте свой шаблон, в котором будут элементы данных, мониторящие загрузку CPU и RAM хоста.`
 
-1. на одну машину савим полный набор: сервер, агент, веб, на вторую - только агент.
+1. Делаем шаблон с двумя items внутри (третий item остался от теста, показанного в лекции).
 
 ```
-Машина 1:
-# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
-# dpkg -i zabbix-release_6.0-4+debian11_all.deb
-# apt update
 
-# apt install zabbix-server-pgsql zabbix-frontend-php php7.4-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
-
-# sudo -u postgres createuser --pwprompt zabbix
-# sudo -u postgres createdb -O zabbix zabbix
-
-# zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
-
-# systemctl restart zabbix-server zabbix-agent nginx php7.4-fpm
-# systemctl enable zabbix-server zabbix-agent nginx php7.4-fpm
-
-Машина 2:
-# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
-# dpkg -i zabbix-release_6.0-4+debian11_all.deb
-# apt update
-
-# apt install zabbix-agent
-
-# systemctl restart zabbix-agent
-# systemctl enable zabbix-agent
 ```
 
-`При необходимости прикрепитe сюда скриншоты
-![Авторизация в админке](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_214052.jpg)
+`Скриншоты:
+![Шаблон с кастомными items](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 134216.jpg)
 `
 
 
@@ -65,32 +42,15 @@
 
 ### Задание 2
 
-`Установите Zabbix Agent на два хоста.`
+`Добавьте в Zabbix два хоста и задайте им имена <фамилия и инициалы-1> и <фамилия и инициалы-2>. Например: ivanovii-1 и ivanovii-2.`
 
-1. Агент установлен на два хоста. Сервер обращается к нему по локалхосту на порте 10050, ко второму агенту - по IP. 
-
-```
-Команды для установки агента:
-
-# wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-4+debian11_all.deb
-# dpkg -i zabbix-release_6.0-4+debian11_all.deb
-# apt update
-
-# apt install zabbix-agent
-
-# systemctl restart zabbix-agent
-# systemctl enable zabbix-agent
-
-Конфиг: sudo nano /etc/zabbix/zabbix_agentd.conf
-
+1. Latest data начала появляться 
 
 ```
+```
 
-`При необходимости прикрепитe сюда скриншоты
-![Configuration -> Hosts](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_214243.jpg)
-![Agent's logs](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_214938.jpg)
-![Incoming data from both agent and server](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-02/img/Screenshot_2024-06-08_215132.jpg)
-
+`Скриншоты:
+![2 hosts added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)
 `
 
 
@@ -98,38 +58,23 @@
 
 ### Задание 3
 
-`Приведите ответ в свободной форме........`
+`Привяжите созданный шаблон к двум хостам. Также привяжите к обоим хостам шаблон Linux by Zabbix Agent.`
 
-1. 
+1. Две группы гостов добавлены и собирают информацию
 
 ```
-Поле для вставки кода...
-....
-....
-....
-....
 ```
-`При необходимости прикрепитe сюда скриншоты
-![]()`
+`Скриншоты:
+![1 groups added](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 143003.jpg)`
 
 ### Задание 4
 
-`Приведите ответ в свободной форме........`
+`Создайте свой кастомный дашборд.`
+1. Будем измерять два важных параментра - загрузка CPU и RAM
 
-1. `Заполните здесь этапы выполнения, если требуется ....`
-2. `Заполните здесь этапы выполнения, если требуется ....`
-3. `Заполните здесь этапы выполнения, если требуется ....`
-4. `Заполните здесь этапы выполнения, если требуется ....`
-5. `Заполните здесь этапы выполнения, если требуется ....`
-6. 
 
 ```
-Поле для вставки кода...
-....
-....
-....
-....
 ```
 
-`При необходимости прикрепитe сюда скриншоты
-![Название скриншота](ссылка на скриншот)`
+`Скриншоты:
+![Custom dashboard](https://github.com/whiskymerchant/sys-pattern-homework/blob/smon-03/img/Screenshot 2024-06-14 150854.jpg)`

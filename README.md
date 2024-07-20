@@ -25,21 +25,162 @@
 ### Задание 1
 
 `
-Составьте команду rsync, которая позволяет создавать зеркальную копию домашней директории пользователя в директорию /tmp/backup
-Необходимо исключить из синхронизации все директории, начинающиеся с точки (скрытые)
-Необходимо сделать так, чтобы rsync подсчитывал хэш-суммы для всех файлов, даже если их время модификации и размер идентичны в источнике и приемнике.
-На проверку направить скриншот с командой и результатом ее выполнения
+Возьмите за основу решение к заданию 1 из занятия «Подъём инфраструктуры в Яндекс Облаке».
+
+Теперь вместо одной виртуальной машины сделайте terraform playbook, который:
+создаст 2 идентичные виртуальные машины. Используйте аргумент count для создания таких ресурсов;
+создаст таргет-группу. Поместите в неё созданные на шаге 1 виртуальные машины;
+создаст сетевой балансировщик нагрузки, который слушает на порту 80, отправляет трафик на порт 80 виртуальных машин и http healthcheck на порт 80 виртуальных машин.
+Рекомендуем изучить документацию сетевого балансировщика нагрузки для того, чтобы было понятно, что вы сделали.
+
+Установите на созданные виртуальные машины пакет Nginx любым удобным способом и запустите Nginx веб-сервер на порту 80.
+
+Перейдите в веб-консоль Yandex Cloud и убедитесь, что:
+
+созданный балансировщик находится в статусе Active,
+обе виртуальные машины в целевой группе находятся в состоянии healthy.
+Сделайте запрос на 80 порт на внешний IP-адрес балансировщика и убедитесь, что вы получаете ответ в виде дефолтной страницы Nginx.
+В качестве результата пришлите:
+
+1. Terraform Playbook.
+
+2. Скриншот статуса балансировщика и целевой группы.
+
+3. Скриншот страницы, которая открылась при запросе IP-адреса балансировщика.
 `
 
-1. rsync -avz --delete --exclude='.*' --checksum $HOME /tmp/backup
+1. Terraform playbook:
 
 
 ```
+terraform {
+  required_providers {
+    yandex = {
+      source = "yandex-cloud/yandex"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
+provider "yandex" {
+  token     = "y0_AgAAAABmNBoCAATuwQAAAAEGta7tAAAvHdyZ3oBNeJmXsenOMxjLDKC9yA"
+  cloud_id  = "b1g7nhfg14f5iaem3dg6"
+  folder_id = "b1gsf6nuuoog0qnsfcv8"
+  zone      = "ru-central1-a"
+}
+
+data "yandex_compute_image" "ubuntu_image" {
+  family = "ubuntu-2204-lts"
+}
+
+data "yandex_vpc_network" "default_network" {
+  name = "default"
+}
+
+resource "yandex_vpc_subnet" "subnet" {
+  name           = "subnet-1"
+  zone           = "ru-central1-a"
+  network_id     = data.yandex_vpc_network.default_network.id
+  v4_cidr_blocks = ["192.168.10.0/24"]
+}
+
+resource "yandex_compute_instance" "vm" {
+  count       = 2
+  name        = "terraform-test-vm-${count.index + 1}"
+  platform_id = "standard-v1"
+  zone        = "ru-central1-a"
+  
+  labels = {
+    name = "server-${count.index + 1}"
+  }
+
+  resources {
+    cores  = 2
+    memory = 4
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.ubuntu_image.id
+    }
+  }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.subnet.id
+    nat       = true
+  }
+
+  metadata = {
+    ssh-keys = "ubuntu:${file("C:\\.ssh\\id_rsa.pub")}"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("C:\\.ssh\\id_rsa")
+    host        = self.network_interface.0.nat_ip_address
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+      "sudo systemctl start nginx",
+    ]
+  }
+}
+
+resource "yandex_lb_target_group" "lb_target_group" {
+  name      = "my-target-group"
+  region_id = "ru-central1"
+
+  dynamic "target" {
+    for_each = yandex_compute_instance.vm
+    content {
+      subnet_id = yandex_vpc_subnet.subnet.id
+      address   = target.value.network_interface.0.ip_address
+    }
+  }
+}
+
+resource "yandex_lb_network_load_balancer" "lb" {
+  name = "my-network-load-balancer"
+
+  listener {
+    name = "my-listener"
+    port = 80
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.lb_target_group.id
+
+    healthcheck {
+      name = "http"
+      http_options {
+        port = 80
+        path = "/"
+      }
+    }
+  }
+}
+
+output "vm_external_ip_addresses" {
+  value = yandex_compute_instance.vm[*].network_interface.0.nat_ip_address
+}
+
+output "load_balancer_ip" {
+  value = yandex_lb_network_load_balancer.lb.listener.*.external_address_spec[0].*.address
+}
+
 
 ```
 
 `Скриншоты:
-![rsync local backup](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-3/img/Screenshot_2024-06-24_224321.jpg)
+![nginx is working fine](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-4/img/Screenshot_2024-07-20_170920.jpg)
+![balancer is on air](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-4/img/Screenshot_2024-07-20_170948.jpg)
 `
 
 ---
@@ -47,23 +188,16 @@
 ### Задание 2
 
 `
-Написать скрипт и настроить задачу на регулярное резервное копирование домашней директории пользователя с помощью rsync и cron.
-Резервная копия должна быть полностью зеркальной
-Резервная копия должна создаваться раз в день, в системном логе должна появляться запись об успешном или неуспешном выполнении операции
-Резервная копия размещается локально, в директории /tmp/backup
-На проверку направить файл crontab и скриншот с результатом работы утилиты.
+
 `
 
-1. crontab file содержание:
-
-```
-0 2 * * * /home/username/backup_script.sh
+1. 
 
 ```
 
-`Скриншоты:
-![crontab screenshot](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-3/img/Screenshot_2024-06-24_225020.jpg)
-![logs](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-3/img/Screenshot_2024-06-24_225735.jpg)
+```
+
+`
 `
 
 

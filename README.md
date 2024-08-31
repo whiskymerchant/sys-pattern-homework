@@ -25,87 +25,50 @@
 ### Задание 1
 
 `
-Запустите два simple python сервера на своей виртуальной машине на разных портах
-Установите и настройте HAProxy, воспользуйтесь материалами к лекции по ссылке
-Настройте балансировку Round-robin на 4 уровне.
-На проверку направьте конфигурационный файл haproxy, скриншоты, где видно перенаправление запросов на разные серверы при обращении к HAProxy.
+Задание 1. СУБД
+Кейс
+Крупная строительная компания, которая также занимается проектированием и девелопментом, решила создать правильную архитектуру для работы с данными. Ниже представлены задачи, которые необходимо решить для каждой предметной области.
+
+Какие типы СУБД, на ваш взгляд, лучше всего подойдут для решения этих задач и почему?
+
+1.1. Бюджетирование проектов с дальнейшим формированием финансовых аналитических отчётов и прогнозирования рисков. СУБД должна гарантировать целостность и чёткую структуру данных.
+
+1.1.* Хеширование стало занимать длительно время, какое API можно использовать для ускорения работы?
+
+1.2. Под каждый девелоперский проект создаётся отдельный лендинг, и все данные по лидам стекаются в CRM к маркетологам и менеджерам по продажам. Какой тип СУБД лучше использовать для лендингов и для CRM? СУБД должны быть гибкими и быстрыми.
+
+1.2.* Можно ли эту задачу закрыть одной СУБД? И если да, то какой именно СУБД и какой реализацией?
+
+1.3. Отдел контроля качества решил создать базу по корпоративным нормам и правилам, обучающему материалу и так далее, сформированную согласно структуре компании. СУБД должна иметь простую и понятную структуру.
+
+1.3.* Можно ли под эту задачу использовать уже существующую СУБД из задач выше и если да, то как лучше это реализовать?
+
+1.4. Департамент логистики нуждается в решении задач по быстрому формированию маршрутов доставки материалов по объектам и распределению курьеров по маршрутам с доставкой документов. СУБД должна уметь быстро работать со связями.
+
+1.4.* Можно ли к этой СУБД подключить отдел закупок или для них лучше сформировать свою СУБД в связке с СУБД логистов?
+
+1.5.* Можно ли все перечисленные выше задачи решить, используя одну СУБД? Если да, то какую именно?
+
+Приведите ответ в свободной форме.
 `
 
-1. Поднимаем два python сервера.
-2. Настраиваем nginx
-3. Настраиваем haproxy
+1.1 Для финансовых отчетов рекомендую транзакционную БД. Лучшие практики - SQL. Например, Постгре или SQLite. В последнеи сложнее делать миграции. 
+1.1* Не до конца понял вопроса про АПИ. Если хэширование занимает больше времени, возможно надо перейти на более скоростный алгоритмы: SHA-1, Blake2 или MD5.
+1.2 Гибкость даст объектно-оринетированная БД. Я люблю Монго. Для доступа из РФ к их облачному решению "Атлас" нужен ВПН. Коммюнити эдишн ставится с зеркал. 
+1.2* Думаю можно одной. Даже если предполодить, что в базе будет 100К объектов и ДБА поленится создать индексы, запрос COLLECTION SCAN займет несколько сотен миллисекунд. С индексами - несколько десятков. Реализация - на усмотрение админа. Я люблю облачное решение Монго Атлас. Но можно и локально. 
+1.3 Тоже Монго )
+1.3* У нас уже есть Монго в п. 1.2 - там просто создадим новую базу use newDatabaseName, создаем нужную коллекцию через вставку документа db.newCollectionName.insertOne({ key: "value" }). Альтернативно можем в существующей базе создать новую коллекцию под новые данные.
+1.4 Вы уже наверное поняли, что я люблю Монго и такую задачу решил бы на ней, но видимо по материалам урока тут следует использовать SQL базу, например Постгре. 
+1.4* Конечно можно подключить. Но можно и сделать связи с нужными таблицами между закупками и логистикой. 
+1.5* MongoDB )))
 
 ```
-global
-	log /dev/log	local0
-	log /dev/log	local1 notice
-	chroot /var/lib/haproxy
-	stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-	stats timeout 30s
-	user haproxy
-	group haproxy
-	daemon
 
-	# Default SSL material locations
-	ca-base /etc/ssl/certs
-	crt-base /etc/ssl/private
-
-	# See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
-        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
-        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
-        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
-
-defaults
-	log	global
-	mode	tcp
-	option	httplog
-	option	dontlognull
-        timeout connect 5000
-        timeout client  50000
-        timeout server  50000
-	errorfile 400 /etc/haproxy/errors/400.http
-	errorfile 403 /etc/haproxy/errors/403.http
-	errorfile 408 /etc/haproxy/errors/408.http
-	errorfile 500 /etc/haproxy/errors/500.http
-	errorfile 502 /etc/haproxy/errors/502.http
-	errorfile 503 /etc/haproxy/errors/503.http
-	errorfile 504 /etc/haproxy/errors/504.http
-
-listen stats  # веб-страница со статистикой
-        bind                    :888
-        mode                    tcp
-        stats                   enable
-        stats uri               /stats
-        stats refresh           5s
-        stats realm             Haproxy\ Statistics
-
-frontend example  # секция фронтенд
-        mode tcp
-        bind :8088
-        #default_backend web_servers
-	acl ACL_example.com hdr(host) -i example.com
-	use_backend web_servers if ACL_example.com
-
-backend web_servers    # секция бэкенд
-        mode tcp
-        balance roundrobin
-        option httpchk
-        http-check send meth GET uri /index.html
-        server s1 127.0.0.1:8888 check
-        server s2 127.0.0.1:9999 check
-
-
-listen web_tcp
-
-	bind :1325
-
-	server s1 127.0.0.1:8888 check inter 3s
-	server s2 127.0.0.1:9999 check inter 3s
 
 ```
 
 `Скриншоты:
-![haproxy tcp roundrobin works fine](https://github.com/whiskymerchant/sys-pattern-homework/blob/sflt-2/img/Screenshot_2024-06-22_212557.jpg)
+
 `
 
 ---
@@ -113,81 +76,17 @@ listen web_tcp
 ### Задание 2
 
 `
-Запустите три simple python сервера на своей виртуальной машине на разных портах
-Настройте балансировку Weighted Round Robin на 7 уровне, чтобы первый сервер имел вес 2, второй - 3, а третий - 4
-HAproxy должен балансировать только тот http-трафик, который адресован домену example.local
-На проверку направьте конфигурационный файл haproxy, скриншоты, где видно перенаправление запросов на разные серверы при обращении к HAProxy c использованием домена example.local и без него.
+Задание 2. Транзакции
+2.1. Пользователь пополняет баланс счёта телефона, распишите пошагово, какие действия должны произойти для того, чтобы транзакция завершилась успешно. Ориентируйтесь на шесть действий.
+
+2.1.* Какие действия должны произойти, если пополнение счёта телефона происходило бы через автоплатёж?
+
+Приведите ответ в свободной форме.
 `
 
 1. Latest data начала появляться 
 
 ```
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
-
-defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    timeout connect 5000
-    timeout client  50000
-    timeout server  50000
-    errorfile 400 /etc/haproxy/errors/400.http
-    errorfile 403 /etc/haproxy/errors/403.http
-    errorfile 408 /etc/haproxy/errors/408.http
-    errorfile 500 /etc/haproxy/errors/500.http
-    errorfile 502 /etc/haproxy/errors/502.http
-    errorfile 503 /etc/haproxy/errors/503.http
-    errorfile 504 /etc/haproxy/errors/504.http
-
-listen stats  # веб-страница со статистикой
-    bind                    :888
-    mode                    http
-    stats                   enable
-    stats uri               /stats
-    stats refresh           5s
-    stats realm             Haproxy\ Statistics
-
-frontend example  # секция фронтенд
-    mode http
-    bind :8088
-    acl is_example_local hdr(host) -i example.local
-    use_backend weighted_backend if is_example_local
-    default_backend web_servers
-
-backend weighted_backend
-    mode http
-    balance roundrobin
-    option httpchk
-    http-check send meth GET uri /index.html
-    server s1 127.0.0.1:8888 check weight 2
-    server s2 127.0.0.1:9999 check weight 3
-    server s3 127.0.0.1:7777 check weight 4
-
-backend web_servers    # секция бэкенд
-    mode http
-    balance roundrobin
-    option httpchk
-    http-check send meth GET uri /index.html
-    server s1 127.0.0.1:8888 check inter 5s
-    server s2 127.0.0.1:9999 check inter 5s
-    server s3 127.0.0.1:7777 check inter 5s
-
-listen web_tcp
-    bind :1325
-    mode tcp
-    server s1 127.0.0.1:8888 check inter 5s
-    server s2 127.0.0.1:9999 check inter 5s
-    server s3 127.0.0.1:7777 check inter 5s
-
 
 ```
 

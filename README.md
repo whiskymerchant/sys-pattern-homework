@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "ELK" - `Антон Плехов`
+# Домашнее задание к занятию "Базы данных" - `Антон Плехов`
 
 
 ### Инструкция по выполнению домашнего задания
@@ -25,18 +25,78 @@
 ### Задание 1
 
 `
-Задание 1. Elasticsearch
-Установите и запустите Elasticsearch, после чего поменяйте параметр cluster_name на случайный.
+Задание 1
+Опишите не менее семи таблиц, из которых состоит база данных:
 
-Приведите скриншот команды 'curl -X GET 'localhost:9200/_cluster/health?pretty', сделанной на сервере с установленным Elasticsearch. Где будет виден нестандартный cluster_name.
+какие данные хранятся в этих таблицах;
+какой тип данных у столбцов в этих таблицах, если данные хранятся в PostgreSQL.
+Приведите решение к следующему виду:
+
+Сотрудники (
+
+идентификатор, первичный ключ, serial,
+фамилия varchar(50),
+...
+идентификатор структурного подразделения, внешний ключ, integer).
 `
 ```
+Решение.
 
+Предлагаю разбить данные на семь таблиц с соответствующими связями:
+
+1. Employees
+
+   employee_id SERIAL PRIMARY KEY
+   first_name VARCHAR(50)
+   middle_name VARCHAR(50)
+   surname VARCHAR(50)
+   salary NUMERIC(10, 2)
+   position VARCHAR(50)
+   hire_date DATE
+   branch_id INTEGER REFERENCES Branches(branch_id)
+   project_id INTEGER REFERENCES Projects(project_id)
+
+2. Departments
+
+   department_id SERIAL PRIMARY KEY
+   department_type VARCHAR(50)
+   department_name VARCHAR(100)
+
+3. Branches
+
+   branch_id SERIAL PRIMARY KEY
+   region VARCHAR(100)
+   city VARCHAR(50)
+   street_address VARCHAR(200)
+   building VARCHAR(50)
+
+4. Projects
+
+   project_id SERIAL PRIMARY KEY
+   project_name VARCHAR(100)
+
+5. Positions
+
+   position_id SERIAL PRIMARY KEY
+   position_name VARCHAR(50)
+
+6. Salaries
+
+   salary_id SERIAL PRIMARY KEY
+   employee_id INTEGER REFERENCES Employees(employee_id)
+   salary_amount NUMERIC(10, 2)
+   effective_date DATE
+
+7. Employee_departments (optional - те можно уже в процессе сделать)
+
+   employee_id INTEGER REFERENCES Employees(employee_id),
+   department_id INTEGER REFERENCES Departments(department_id),
+   PRIMARY KEY (employee_id, department_id)
 
 ```
 
 `Скриншоты:
-![elasticsearch_on](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 20.46.10.png)
+![descrioption](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-1/)
 `
 
 ---
@@ -44,10 +104,7 @@
 ### Задание 2
 
 `
-Задание 2. Kibana
-Установите и запустите Kibana.
 
-Приведите скриншот интерфейса Kibana на странице http://<ip вашего сервера>:5601/app/dev_tools#/console, где будет выполнен запрос GET /_cluster/health?pretty.
 `
 
 ```
@@ -55,7 +112,7 @@
 ```
 
 `Скриншоты:
-![kibana_on](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 20.47.38.png)
+
 `
 
 
@@ -64,26 +121,20 @@
 ### Задание 3
 
 `
-Задание 3. Logstash
-Установите и запустите Logstash и Nginx. С помощью Logstash отправьте access-лог Nginx в Elasticsearch.
 
-Приведите скриншот интерфейса Kibana, на котором видны логи Nginx.
 `
 
 
 ```
 ```
 `Скриншоты:
-![nginx_logs_in_kibana](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 20.52.19.png)
+
 `
 
 ### Задание 4
 
 `
-Задание 4. Filebeat.
-Установите и запустите Filebeat. Переключите поставку логов Nginx с Logstash на Filebeat.
 
-Приведите скриншот интерфейса Kibana, на котором видны логи Nginx, которые были отправлены через Filebeat.
 `
 
 
@@ -91,5 +142,5 @@
 ```
 
 `Скриншоты:
-![filebeat_on](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 21.29.34.png)
+
 `

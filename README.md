@@ -44,10 +44,10 @@
 #  ## Задание 2
 
 `
-Задание 2. Memcached
-Установите и запустите memcached.
+Задание 2. Kibana
+Установите и запустите Kibana.
 
-Приведите скриншот systemctl status memcached, где будет видно, что memcached запущен.
+Приведите скриншот интерфейса Kibana на странице http://<ip вашего сервера>:5601/app/dev_tools#/console, где будет выполнен запрос GET /_cluster/health?pretty.
 `
 
 ```
@@ -55,7 +55,7 @@
 ```
 
 `Скриншоты:
-![memcache running](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-2/img/Screenshot 2024-08-31 at 23.59.00.png)
+![kibana_on](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 20.47.38.png)
 `
 
 
@@ -64,26 +64,26 @@
 ### Задание 3
 
 `
-Задание 3. Удаление по TTL в Memcached
-Запишите в memcached несколько ключей с любыми именами и значениями, для которых выставлен TTL 5.
+Задание 3. Logstash
+Установите и запустите Logstash и Nginx. С помощью Logstash отправьте access-лог Nginx в Elasticsearch.
 
-Приведите скриншот, на котором видно, что спустя 5 секунд ключи удалились из базы.
+Приведите скриншот интерфейса Kibana, на котором видны логи Nginx.
 `
 
 
 ```
 ```
 `Скриншоты:
-![memcache operations](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-2/img/Screenshot 2024-09-01 at 0.03.50.png)
+![nginx_logs_in_kibana](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 20.52.19.png)
 `
 
 ### Задание 4
 
 `
-Задание 4. Запись данных в Redis
-Запишите в Redis несколько ключей с любыми именами и значениями.
+Задание 4. Filebeat.
+Установите и запустите Filebeat. Переключите поставку логов Nginx с Logstash на Filebeat.
 
-Через redis-cli достаньте все записанные ключи и значения из базы, приведите скриншот этой операции.
+Приведите скриншот интерфейса Kibana, на котором видны логи Nginx, которые были отправлены через Filebeat.
 `
 
 
@@ -91,5 +91,5 @@
 ```
 
 `Скриншоты:
-![memcache operations](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-2/img/Screenshot 2024-09-01 at 0.56.45.png)
+![filebeat_on](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb-3/img/Screenshot 2024-09-06 at 21.29.34.png)
 `

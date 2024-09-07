@@ -25,48 +25,29 @@
 ### Задание 1
 
 `
-Задание можно выполнить как в любом IDE, так и в командной строке.
-
 Задание 1
-Получите уникальные названия районов из таблицы с адресами, которые начинаются на “K” и заканчиваются на “a” и не содержат пробелов.
+Одним запросом получите информацию о магазине, в котором обслуживается более 300 покупателей, и выведите в результат следующую информацию:
 
-Задание 2
-Получите из таблицы платежей за прокат фильмов информацию по платежам, которые выполнялись в промежуток с 15 июня 2005 года по 18 июня 2005 года включительно и стоимость которых превышает 10.00.
-
-Задание 3
-Получите последние пять аренд фильмов.
-
-Задание 4
-Одним запросом получите активных покупателей, имена которых Kelly или Willie.
-
-Сформируйте вывод в результат таким образом:
-
-все буквы в фамилии и имени из верхнего регистра переведите в нижний регистр,
-замените буквы 'll' в именах на 'pp'.
+фамилия и имя сотрудника из этого магазина;
+город нахождения магазина;
+количество пользователей, закреплённых в этом магазине.
 `
 ```
 Решение.
 
-SELECT DISTINCT district 
-FROM address
-WHERE district LIKE 'K%a' 
-AND district NOT LIKE '% %';
-
-SELECT payment_id , amount, payment_date, last_update 
-FROM payment
-WHERE payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-19 00:00:00'
-AND amount > 10.00;
-
-SELECT * 
-FROM rental
-ORDER BY rental_date DESC
-LIMIT 5;
-
-SELECT LOWER(REPLACE(REPLACE(first_name, 'll', 'pp'), 'LL', 'PP')) AS Имя,
-       LOWER(last_name) AS Фамилия
-FROM customer
-WHERE first_name IN ('Kelly', 'Willie')
-AND active = 1;
+SELECT 
+    st.store_id, 
+    LOWER(s.last_name) AS employee_last_name, 
+    LOWER(s.first_name) AS employee_first_name, 
+    LOWER(ci.city) AS store_city, 
+    COUNT(c.customer_id) AS customer_count
+FROM store st
+JOIN staff s ON st.store_id = s.store_id
+JOIN address a ON s.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN customer c ON st.store_id = c.store_id
+GROUP BY st.store_id, s.last_name, s.first_name, ci.city
+HAVING COUNT(c.customer_id) > 300;
 
 ```
 
@@ -80,11 +61,14 @@ AND active = 1;
 ### Задание 2
 
 `
-
+Задание 2
+Получите количество фильмов, продолжительность которых больше средней продолжительности всех фильмов.
 `
 
 ```
-
+SELECT COUNT(*) AS films_above_average
+FROM film
+WHERE length > (SELECT AVG(length) FROM film);
 
 ```
 
@@ -98,11 +82,22 @@ AND active = 1;
 ### Задание 3
 
 `
-
+Задание 3
+Получите информацию, за какой месяц была получена наибольшая сумма платежей, и добавьте информацию по количеству аренд за этот месяц.
 `
 
 
 ```
+SELECT 
+    DATE_FORMAT(payment_date, '%Y-%m') AS payment_month, 
+    SUM(amount) AS total_payments, 
+    COUNT(rental_id) AS rental_count
+FROM payment
+GROUP BY payment_month
+ORDER BY total_payments DESC
+LIMIT 1;
+
+
 ```
 `Скриншоты:
 

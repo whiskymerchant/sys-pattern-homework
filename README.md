@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "Базы данных" - `Антон Плехов`
+# Домашнее задание к занятию "Работа с данными (DDL/DML)" - `Антон Плехов`
 
 
 ### Инструкция по выполнению домашнего задания
@@ -26,73 +26,52 @@
 
 `
 Задание 1
-Опишите не менее семи таблиц, из которых состоит база данных:
+1.1. Поднимите чистый инстанс MySQL версии 8.0+. Можно использовать локальный сервер или контейнер Docker.
 
-какие данные хранятся в этих таблицах;
-какой тип данных у столбцов в этих таблицах, если данные хранятся в PostgreSQL.
-Приведите решение к следующему виду:
+1.2. Создайте учётную запись sys_temp.
 
-Сотрудники (
+1.3. Выполните запрос на получение списка пользователей в базе данных. (скриншот)
 
-идентификатор, первичный ключ, serial,
-фамилия varchar(50),
-...
-идентификатор структурного подразделения, внешний ключ, integer).
+1.4. Дайте все права для пользователя sys_temp.
+
+1.5. Выполните запрос на получение списка прав для пользователя sys_temp. (скриншот)
+
+1.6. Переподключитесь к базе данных от имени sys_temp.
+
+Для смены типа аутентификации с sha2 используйте запрос:
+
+ALTER USER 'sys_test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+1.6. По ссылке https://downloads.mysql.com/docs/sakila-db.zip скачайте дамп базы данных.
+
+1.7. Восстановите дамп в базу данных.
+
+1.8. При работе в IDE сформируйте ER-диаграмму получившейся базы данных. При работе в командной строке используйте команду для получения всех таблиц базы данных. (скриншот)
+
+Результатом работы должны быть скриншоты обозначенных заданий, а также простыня со всеми запросами.
 `
 ```
 Решение.
 
-Предлагаю разбить данные на семь таблиц с соответствующими связями:
+SELECT user, host FROM mysql.user;
 
-1. Employees
+CREATE USER 'sys_temp'@'%' IDENTIFIED BY 'test';
 
-   employee_id SERIAL PRIMARY KEY
-   first_name VARCHAR(50)
-   middle_name VARCHAR(50)
-   surname VARCHAR(50)
-   position VARCHAR(50) REFERENCES Positions (position_id)
-   hire_date DATE
-   branch_id INTEGER REFERENCES Branches (branch_id)
+SELECT user, host FROM mysql.user;
 
-2. Departments
+GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'%';
 
-   department_id SERIAL PRIMARY KEY
-   department_type VARCHAR(50)
-   department_name VARCHAR(100)
+SHOW GRANTS FOR 'sys_temp'@'%';
 
-3. Branches
-
-   branch_id SERIAL PRIMARY KEY
-   full_address VARCHAR(200)
-
-4. Projects
-
-   project_id SERIAL PRIMARY KEY
-   project_name VARCHAR(100)
-
-5. Positions
-
-   position_id SERIAL PRIMARY KEY
-   position_name VARCHAR(50)
-   position_salary NUMERIC(10, 2) REFERENCES Salaries (salary_id)
-
-6. Salaries
-
-   salary_id SERIAL PRIMARY KEY
-   salary_amount NUMERIC(10, 2)
-   effective_date DATE
-
-7. Employee_projects (optional - те можно уже в процессе сделать)
-
-   employee_id INTEGER REFERENCES Employees(employee_id)
-   project_id INTEGER REFERENCES Projects(project_id)
-   PRIMARY KEY (employee_id, department_id)
-
+SHOW TABLES;
 ```
 
-`Скриншоты:
-![descrioption](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-1/)
 `
+Скриншоты:
+![all_users](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.31.13.png)
+![sys_temp_grants](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.31.41.png)
+![all_tables](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.41.15.png)
+![ERD](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.41.35.png)
+`  
 
 ---
 
@@ -103,6 +82,41 @@
 `
 
 ```
+Решение
+
+Название таблицы|Название первичного ключа|
+----------------+-------------------------+
+actor           |actor_id                 |
+address         |address_id               |
+category        |category_id              |
+city            |city_id                  |
+country         |country_id               |
+customer        |customer_id              |
+film            |film_id                  |
+film_actor      |actor_id                 |
+film_actor      |film_id                  |
+film_category   |film_id                  |
+film_category   |category_id              |
+film_text       |film_id                  |
+inventory       |inventory_id             |
+language        |language_id              |
+payment         |payment_id               |
+rental          |rental_id                |
+staff           |staff_id                 |
+store           |store_id                 |
+
+В БД есть таблицы с ключом, по которому нет связи. Видимо его нельзя назвать ПРАЙМЕРИ?
+
+SHOW TABLES
+
+SELECT 
+    TABLE_NAME AS 'Название таблицы',
+    COLUMN_NAME AS 'Название первичного ключа'
+FROM 
+    information_schema.KEY_COLUMN_USAGE
+WHERE 
+    CONSTRAINT_NAME = 'PRIMARY' 
+    AND TABLE_SCHEMA = 'sakila';
 
 ```
 

@@ -50,11 +50,9 @@
    first_name VARCHAR(50)
    middle_name VARCHAR(50)
    surname VARCHAR(50)
-   salary NUMERIC(10, 2)
-   position VARCHAR(50)
+   position VARCHAR(50) REFERENCES Positions (position_id)
    hire_date DATE
-   branch_id INTEGER REFERENCES Branches(branch_id)
-   project_id INTEGER REFERENCES Projects(project_id)
+   branch_id INTEGER REFERENCES Branches (branch_id)
 
 2. Departments
 
@@ -65,10 +63,7 @@
 3. Branches
 
    branch_id SERIAL PRIMARY KEY
-   region VARCHAR(100)
-   city VARCHAR(50)
-   street_address VARCHAR(200)
-   building VARCHAR(50)
+   full_address VARCHAR(200)
 
 4. Projects
 
@@ -79,18 +74,18 @@
 
    position_id SERIAL PRIMARY KEY
    position_name VARCHAR(50)
+   position_salary NUMERIC(10, 2) REFERENCES Salaries (salary_id)
 
 6. Salaries
 
    salary_id SERIAL PRIMARY KEY
-   employee_id INTEGER REFERENCES Employees(employee_id)
    salary_amount NUMERIC(10, 2)
    effective_date DATE
 
-7. Employee_departments (optional - те можно уже в процессе сделать)
+7. Employee_projects (optional - те можно уже в процессе сделать)
 
-   employee_id INTEGER REFERENCES Employees(employee_id),
-   department_id INTEGER REFERENCES Departments(department_id),
+   employee_id INTEGER REFERENCES Employees(employee_id)
+   project_id INTEGER REFERENCES Projects(project_id)
    PRIMARY KEY (employee_id, department_id)
 
 ```

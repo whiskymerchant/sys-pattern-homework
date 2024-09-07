@@ -93,11 +93,9 @@ SELECT
     SUM(amount) AS total_payments, 
     COUNT(rental_id) AS rental_count
 FROM payment
-GROUP BY payment_month
+GROUP BY DATE_FORMAT(payment_date, '%Y-%m')
 ORDER BY total_payments DESC
 LIMIT 1;
-
-
 ```
 `Скриншоты:
 

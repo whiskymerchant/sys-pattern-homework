@@ -25,52 +25,53 @@
 ### Задание 1
 
 `
+Задание можно выполнить как в любом IDE, так и в командной строке.
+
 Задание 1
-1.1. Поднимите чистый инстанс MySQL версии 8.0+. Можно использовать локальный сервер или контейнер Docker.
+Получите уникальные названия районов из таблицы с адресами, которые начинаются на “K” и заканчиваются на “a” и не содержат пробелов.
 
-1.2. Создайте учётную запись sys_temp.
+Задание 2
+Получите из таблицы платежей за прокат фильмов информацию по платежам, которые выполнялись в промежуток с 15 июня 2005 года по 18 июня 2005 года включительно и стоимость которых превышает 10.00.
 
-1.3. Выполните запрос на получение списка пользователей в базе данных. (скриншот)
+Задание 3
+Получите последние пять аренд фильмов.
 
-1.4. Дайте все права для пользователя sys_temp.
+Задание 4
+Одним запросом получите активных покупателей, имена которых Kelly или Willie.
 
-1.5. Выполните запрос на получение списка прав для пользователя sys_temp. (скриншот)
+Сформируйте вывод в результат таким образом:
 
-1.6. Переподключитесь к базе данных от имени sys_temp.
-
-Для смены типа аутентификации с sha2 используйте запрос:
-
-ALTER USER 'sys_test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
-1.6. По ссылке https://downloads.mysql.com/docs/sakila-db.zip скачайте дамп базы данных.
-
-1.7. Восстановите дамп в базу данных.
-
-1.8. При работе в IDE сформируйте ER-диаграмму получившейся базы данных. При работе в командной строке используйте команду для получения всех таблиц базы данных. (скриншот)
-
-Результатом работы должны быть скриншоты обозначенных заданий, а также простыня со всеми запросами.
+все буквы в фамилии и имени из верхнего регистра переведите в нижний регистр,
+замените буквы 'll' в именах на 'pp'.
 `
 ```
 Решение.
 
-SELECT user, host FROM mysql.user;
+SELECT DISTINCT district 
+FROM address
+WHERE district LIKE 'K%a' 
+AND district NOT LIKE '% %';
 
-CREATE USER 'sys_temp'@'%' IDENTIFIED BY 'test';
+SELECT payment_id , amount, payment_date, last_update 
+FROM payment
+WHERE payment_date BETWEEN '2005-06-15' AND '2005-06-18'
+AND amount > 10.00;
 
-SELECT user, host FROM mysql.user;
+SELECT * 
+FROM rental
+ORDER BY rental_date DESC
+LIMIT 5;
 
-GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'%';
-
-SHOW GRANTS FOR 'sys_temp'@'%';
-
-SHOW TABLES;
+SELECT LOWER(REPLACE(REPLACE(first_name, 'll', 'pp'), 'LL', 'PP')) AS Имя,
+       LOWER(last_name) AS Фамилия
+FROM customer
+WHERE first_name IN ('Kelly', 'Willie')
+AND active = 1;
 ```
 
 `
 Скриншоты:
-![all_users](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.31.13.png)
-![sys_temp_grants](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.31.41.png)
-![all_tables](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.41.15.png)
-![ERD](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-2/img/Screenshot 2024-09-07 at 13.41.35.png)
+![description](https://github.com/whiskymerchant/sys-pattern-homework/blob/sdb2-3/img/)
 `  
 
 ---

@@ -54,7 +54,7 @@ AND district NOT LIKE '% %';
 
 SELECT payment_id , amount, payment_date, last_update 
 FROM payment
-WHERE payment_date BETWEEN '2005-06-15' AND '2005-06-18'
+WHERE payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-19 00:00:00'
 AND amount > 10.00;
 
 SELECT * 
@@ -67,6 +67,7 @@ SELECT LOWER(REPLACE(REPLACE(first_name, 'll', 'pp'), 'LL', 'PP')) AS Имя,
 FROM customer
 WHERE first_name IN ('Kelly', 'Willie')
 AND active = 1;
+
 ```
 
 `

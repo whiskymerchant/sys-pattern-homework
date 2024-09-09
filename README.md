@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "Работа с данными (DDL/DML)" - `Антон Плехов`
+# Домашнее задание к занятию "SQL-1" - `Антон Плехов`
 
 
 ### Инструкция по выполнению домашнего задания
@@ -54,7 +54,7 @@ AND district NOT LIKE '% %';
 
 SELECT payment_id , amount, payment_date, last_update 
 FROM payment
-WHERE payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-19 00:00:00'
+WHERE payment_date BETWEEN '2005-06-15 00:00:00' AND '2005-06-18 23:59:59'
 AND amount > 10.00;
 
 SELECT * 

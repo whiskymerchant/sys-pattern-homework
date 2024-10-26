@@ -39,7 +39,7 @@
 ```
 
 `Скриншоты:
-![cryptouser folder encrypted](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-001906.jpg)
+![cryptouser folder encrypted](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-001906.jpg) 
 `
 
 
@@ -59,13 +59,17 @@
 
 
 ```
-
+Снимки экрана в хронологическом порядке прилагаю ниже
 
 
 ```
 
 `Скриншоты:
-![Как я сканировал Вайершарком](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-1/img/2024-10-25-230240.jpg)
+![paritition created](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-130405.jpg)
+![disk encrypted](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-130528.jpg)
+![filled with zeros](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-130815.jpg)
+![mounted to .secret directory](https://github.com/whiskymerchant/sys-pattern-homework/blob/ins-2/img/2024-10-26-131011.jpg)
+
 `
 
 
